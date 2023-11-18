@@ -1,0 +1,54 @@
+# Copyright (c) 2023, Sun Yat-sen Univeristy, inc.
+# All rights reserved.
+
+# @author: Jiahua Rao
+# @license: BSD-3-Clause, For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+# @contact: jiahua.rao@gmail.com
+
+
+inter_dataset:
+  high-ppi:
+    name: high-ppi
+    storage:
+      - high_ppi/mapping/nodeidx2proteinid.csv
+    protein_seq_path: protein.SHS27k.sequences.dictionary.pro3.tsv
+    vec_path: vec5_CTC.txt
+    protein_feats_path: x_list.pt
+    protein_graph_adj_path: edge_list_12.npy
+
+    split: default
+    has_node_attr: True
+    has_edge_attr: False
+    add_inverse_edge: True
+
+run:
+  task: MUSE
+  
+  is_augmented: True
+  pl_ratio: 0.2
+  em_total_iters: 8
+  patience: 20
+
+  lr: 1e-4
+  gnn_epochs: 30
+  batch_size: 8
+
+  link_lr: 0.0001
+  link_batch_size: 32
+  link_epochs: 200
+
+  evaluate_only: False
+
+model:
+  intra_model:
+    name: gnn
+    # hidden: 128
+    protein_input_dim: 193
+    protein_edge_input_dim: 450
+    protein_gnn_dim: 128
+    protein_gnn_layers: 4
+    dropout: 0.2
+    augment_eps: 0.0
+
+  inter_model:
+    name: gnn

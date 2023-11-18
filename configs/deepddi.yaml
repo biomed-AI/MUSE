@@ -1,0 +1,56 @@
+# Copyright (c) 2023, Sun Yat-sen Univeristy, inc.
+# All rights reserved.
+
+# @author: Jiahua Rao
+# @license: BSD-3-Clause, For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+# @contact: jiahua.rao@gmail.com
+
+
+inter_dataset:
+  deep-ddi:
+    name: deep-ddi
+    storage:
+      - mapping/nodeidx2drugid.csv
+    smiles_column: smiles
+
+    split: default
+    has_node_attr: False
+    has_edge_attr: False
+    add_inverse_edge: False
+
+
+run:
+  task: MUSE
+  
+  is_augmented: True
+  pl_ratio: 0.2
+  em_total_iters: 5
+  patience: 20
+
+  loss_func: AUC
+  ce_reduction: mean
+  lr: 0.001
+  use_lr_decay: True
+  gnn_epochs: 30
+  batch_size: 2048
+  eval_batch_size: 2048
+
+  link_lr: 0.0001
+  link_epochs: 100
+
+model:
+  intra_model:
+    name: gnn
+    gnn_type: gin
+    graph_pooling: mean
+    load_pretrained: False
+    pretrained_model_path: ""
+
+    num_layer: 5
+    emb_dim: 512
+    JK: last
+    dropout_ratio: 0.2
+
+  inter_model:
+    name: gnn
+    emb_hidden_channels: 256

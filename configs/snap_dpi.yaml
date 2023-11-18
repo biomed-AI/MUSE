@@ -1,0 +1,68 @@
+# Copyright (c) 2023, Sun Yat-sen Univeristy, inc.
+# All rights reserved.
+
+# @author: Jiahua Rao
+# @license: BSD-3-Clause, For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+# @contact: jiahua.rao@gmail.com
+
+
+inter_dataset:
+  snap_dpi:
+    name: snap_dpi
+    storage:
+      - snap_dpi/mapping/nodeidx2proteinid.csv
+      - snap_dpi/mapping/nodeidx2drugid.csv
+
+    split: default
+    has_node_attr: True
+    has_edge_attr: False
+    add_inverse_edge: False
+
+    protein_dim: 64
+    atom_dim: 34
+
+run:
+  task: MUSE
+  
+  is_augmented: True
+  pl_ratio: 0.05
+  em_total_iters: 5
+  patience: 10
+
+  learning_rate: 1e-4
+  gnn_epochs: 50
+  batch_size: 8
+
+  link_epochs: 20
+
+model:
+  intra_model:
+    name: gnn
+    decoder_layers: 2
+    n_heads: 8
+    # gnn_layers: 3
+    # protein_gnn_dim: 64
+    compound_gnn_dim: 34
+    mol2vec_embedding_dim: 300
+    hid_dim: 128
+    pf_dim: 256
+
+    protein_input_dim: 193
+    protein_edge_input_dim: 450
+    protein_gnn_dim: 128
+    protein_gnn_layers: 3
+    dropout: 0.2
+    augment_eps: 0.0
+
+    cnn_layers: 3
+    cnn_kernel_size: 7
+
+    protein_dim: 64
+    atom_dim: 34
+    embedding_dim: 768
+    pretrained: False
+
+  inter_model:
+    name: gnn
+    hidden: 64
+
