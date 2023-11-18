@@ -1,7 +1,7 @@
 # MUSE
 Source code for "A Variational Expectation-Maximization Framework for Balanced Multi-scale Learning of Protein and Drug Interactions"
 
-![workflow](https://github.com/biomed-AI/MUSE/blob/main/image/fig1.jpg)
+![workflow](https://github.com/biomed-AI/MUSE/blob/master/image/fig1.jpg)
 
 # System requirement
 MUSE is mainly based on the following packages:  
