@@ -244,6 +244,20 @@ def Metrictor_DPI(correct_labels, scores, thres=0.5):
 def Metrictor_DDI():
     return
 
+
+
+def Metrictor_PPBS(preds, labels):
+    precisions, recalls, _ = precision_recall_curve(labels, preds)
+    AUPR = auc(recalls, precisions)
+
+    if not(np.any(labels)) or np.all(labels):
+        return 0, AUPR
+
+    AUC = roc_auc_score(labels, preds)
+    return AUC, AUPR
+
+
+
 def get_bfs_sub_graph(ppi_list, node_num, node_to_edge_index, sub_graph_size):
     candiate_node = []
     selected_edge_index = []

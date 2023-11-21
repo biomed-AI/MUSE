@@ -11,7 +11,7 @@ from torch_geometric.nn import global_mean_pool
 from torch_geometric.utils import unbatch
 
 from models.network.encoder import Decoder, Encoder
-
+from models.protein.PeSTo.pesto import Model
 
 class GNN_DPI(nn.Module):
     def __init__(self, args):
@@ -174,3 +174,19 @@ class GNN_DPI(nn.Module):
         #     out = self.fc(out).squeeze(1)
         #     out = torch.sigmoid(out) * 14
         return out
+
+
+
+class PPIsPredictor(nn.Module): # protein-protein interaction predictor
+    def __init__(self, hidden_dim, num_classes=1, **kwargs):
+        super(PPIsPredictor, self).__init__()
+        self.lin1 = nn.Linear(hidden_dim * 2, hidden_dim, bias=True)
+        self.lin2 = nn.Linear(hidden_dim, num_classes, bias=True)
+        self.dropout = nn.Dropout(0.3)
+    
+    def forward(self, graph1_feats, seq1_mask, graph2_feats, seq2_mask):
+        # mean pooling
+        x_a, x_b = graph1_feats.mean(1), graph2_feats.mean(1)
+        feats = torch.cat([x_a, x_b], dim=1)
+        interaction_logits = self.lin2(self.dropout(self.lin1(feats)))
+        return interaction_logits

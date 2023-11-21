@@ -18,8 +18,6 @@ Also you can install the required packages follow there instructions (tested on 
 
 `conda env create -f environment.yaml`
 
-`pip install -r requirements.txt`
-
 
 # Dataset
 We provide the datasets here for those interested in our paper:  
@@ -34,11 +32,17 @@ For EM training (for example, protein-protein interactions):
 python trainer_ppi.py --cfg-path configs/ppi.yaml --job-id test_run
 ```
 
+
+## Protein-Protein Binding Sites Predictions
+For EM training:
+```
+python trainer_ppbs.py --cfg-path configs/ppbs.yaml --job-id test_run
+```
+
 # Citation and contact
 Citation: 
 ```
 ```  
 
 Contact:  
-Jiahua Rao (raojh6@mail2.sysu.edu.cn)
-Yuedong Yang (yangyd25@mail.sysu.edu.cn)
+In case you have questions, please contact [Jiahua Rao](raojh6@mail2.sysu.edu.cn)

@@ -1,0 +1,59 @@
+# Copyright (c) 2023, Sun Yat-sen Univeristy, inc.
+# All rights reserved.
+
+# @author: Jiahua Rao
+# @license: BSD-3-Clause, For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+# @contact: jiahua.rao@gmail.com
+
+
+inter_dataset:
+  ppbs:
+    name: ppbs
+    split: default
+    has_node_attr: True
+    has_edge_attr: False
+    add_inverse_edge: False
+
+    radius: 15
+
+run:
+  task: MUSE
+  pos_weight_factor: 0.5
+  
+  is_augmented: True
+  pl_ratio: 0.2
+  em_total_iters: 5
+  patience: 20
+
+  num_epochs: 7
+  learning_rate: 1e-5
+  lr: 1e-3
+  epochs: 20
+  batch_size: 1
+  residue_batch_size: 8
+
+  link_epochs: 10
+
+  log_step: 500
+  eval_step: 1
+  gradient_accumulation_steps: 16
+
+
+model:
+  residue_scale_model:
+    name: geognn
+    pretrained: False
+
+    node_input_dim: 248
+    edge_input_dim: 450
+    hidden_dim: 128
+    num_layers: 4
+    dropout: 0.2
+    augment_eps: 0.0
+
+  atom_scale_model:
+    name: pesto
+    pretrained: /data/user/raojh/worksapce/MUSE/PPBS/models/PeSTo/save/model_ckpt.pt
+
+  inter_model:
+    name: gnn
